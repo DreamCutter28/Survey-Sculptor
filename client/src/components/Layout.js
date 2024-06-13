@@ -1,13 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-    Box,
-} from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 
 /**
  * Стилизованный компонент `Main`, использующий HTML тег `main`.
@@ -28,25 +22,31 @@ const Main = styled('main')(({ theme }) => ({
  */
 const Layout = ({ children }) => {
     return (
-        <Box sx={{ display: 'flex' }}> {/* Устанавливает гибкий контейнер для всего макета */}
-            <AppBar position="fixed"> {/* Фиксированная верхняя панель */}
-                <Toolbar> {/* Панель инструментов для размещения контента в шапке */}
+        <Box sx={{ display: 'flex' }}>
+            <AppBar position="fixed">
+                <Toolbar>
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 1 }} // Заставляет заголовок занимать максимально возможное пространство
+                        sx={{ flexGrow: 1 }}
                     >
                         Опросник
                     </Typography>
                     <Button component={Link} to="/" color="inherit">
-                        Мои анкеты
+                        Мои опросы
                     </Button>
-                    <Button component={Link} to="/survey/create" color="inherit">
-                        Новый опрос
+                    <Button
+                        component={Link}
+                        to="/question-base"
+                        color="inherit"
+                    >
+                        База вопросов
                     </Button>
                 </Toolbar>
             </AppBar>
-            <Main> {/* Основная область контента, располагается ниже AppBar */}
+            <Main>
+                {' '}
+                {/* Основная область контента, располагается ниже AppBar */}
                 {children}
             </Main>
         </Box>

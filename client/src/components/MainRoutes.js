@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import SurveyList from './SurveyList';
 import SurveyEditor from './SurveyEditor';
 import SurveyForm from './CreateSurveyForm';
+import MyQuestionBase from './MyQuestionBase';
 import NotFound from './NotFound';
 
 /**
@@ -12,22 +13,15 @@ import NotFound from './NotFound';
 const MainRoutes = () => {
     return (
         <Routes>
-            {/* Маршрут к списку всех опросов. */}
             <Route path="/" element={<SurveyList />} />
-
-            {/* Маршрут для редактирования существующего или нового опроса. 
-              Используется для редактирования опросов, данные которых передаются через state. */}
-            <Route path="/survey/edit/:id" element={<SurveyEditor />} />
-
-            {/* Маршрут для создания нового опроса. Использует компонент SurveyForm для ввода данных. */}
+            <Route
+                path="/survey/edit/:interview_id"
+                element={<SurveyEditor />}
+            />
             <Route path="/survey/create" element={<SurveyForm />} />
-
-            {/* Альтернативный маршрут для редактирования нового опроса, предназначенный для передачи начального состояния через state.
-               Этот маршрут позволяет прямо передать данные для нового опроса в SurveyEditor. */}
+            <Route path="/question-base" element={<MyQuestionBase />} />
             <Route path="/survey/edit/new" element={<SurveyEditor />} />
-
-            {/* Маршрут для обработки 404 ошибок. */}
-            <Route path="*" element={<NotFound />} />  /
+            <Route path="*" element={<NotFound />} /> /
         </Routes>
     );
 };

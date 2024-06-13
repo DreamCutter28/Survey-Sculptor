@@ -1,5 +1,3 @@
-//App.js
-
 import React from 'react';
 
 import { ThemeProvider } from '@mui/material/styles';
@@ -12,7 +10,7 @@ const App = () => {
         <>
             <ThemeProvider theme={theme}>
                 <Layout>
-                    <MainRoutes/>
+                    <MainRoutes />
                 </Layout>
             </ThemeProvider>
         </>

@@ -11,16 +11,18 @@ const NotFound = () => {
 
     return (
         <Box sx={{ textAlign: 'center', mt: 8 }}>
-            {/* Заголовок страницы */}
             <Typography variant="h4" gutterBottom>
                 404 - Страница не найдена
             </Typography>
-            {/* Подзаголовок с описанием ошибки */}
             <Typography variant="subtitle1">
                 К сожалению, запрашиваемая страница не найдена.
             </Typography>
-            {/* Кнопка для возврата на главную страницу */}
-            <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate('/')}>
+            <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+                onClick={() => navigate('/')}
+            >
                 Вернуться на главную
             </Button>
         </Box>

@@ -1,39 +1,40 @@
 import React, { useState } from 'react';
 import { Button, TextField, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetSurveyState } from '../store/surveySlice';
 
-/**
- * Форма для создания нового опроса.
- * Использует Material-UI компоненты для ввода данных и валидации.
- * При успешном создании перенаправляет пользователя на страницу редактирования опроса.
- */
 const SurveyForm = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [errors, setErrors] = useState({ name: false, description: false });
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    /**
-     * Проверяет правильность введенных данных и перенаправляет на страницу редактора опроса.
-     */
     const handleCreate = () => {
         let hasError = false;
         if (!name.trim()) {
-            setErrors(prev => ({ ...prev, name: 'Имя опроса обязательно' }));
+            setErrors((prev) => ({ ...prev, name: 'Имя опроса обязательно' }));
             hasError = true;
         } else {
-            setErrors(prev => ({ ...prev, name: false }));
+            setErrors((prev) => ({ ...prev, name: false }));
         }
 
         if (!description.trim()) {
-            setErrors(prev => ({ ...prev, description: 'Описание обязательно' }));
+            setErrors((prev) => ({
+                ...prev,
+                description: 'Описание обязательно',
+            }));
             hasError = true;
         } else {
-            setErrors(prev => ({ ...prev, description: false }));
+            setErrors((prev) => ({ ...prev, description: false }));
         }
 
         if (!hasError) {
-            navigate('/survey/edit/new', { state: { name, description, pages: [] } });
+            dispatch(resetSurveyState()); // Сбрасываем состояние перед навигацией
+            navigate('/survey/edit/new', {
+                state: { name, description, pages: [] },
+            });
         }
     };
 
@@ -69,7 +70,12 @@ const SurveyForm = () => {
                 error={Boolean(errors.description)}
                 helperText={errors.description}
             />
-            <Button variant="contained" color="primary" onClick={handleCreate} sx={{ mt: 2 }}>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCreate}
+                sx={{ mt: 2 }}
+            >
                 Создать
             </Button>
         </Box>

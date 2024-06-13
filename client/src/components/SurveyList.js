@@ -1,22 +1,21 @@
+//components/SurveyList.js
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography, Paper, IconButton } from '@mui/material';
-import { Edit } from '@mui/icons-material';
+import { Box, Typography, Paper, IconButton, Button } from '@mui/material';
+import { Edit, Add } from '@mui/icons-material';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import LoadingIndicator from './LoadingIndicator';
-
 /**
  * Отображает список опросов с возможностью их редактирования.
  * Использует перетаскивание для изменения порядка опросов в списке.
  */
 const SurveyList = () => {
     const [surveys, setSurveys] = useState([]); // Хранение списка опросов
-    const [isLoading, setIsLoading] = useState(true); // Состояние загрузки
+    const [isLoading, setIsLoading] = useState(true);
 
-    // Загружает данные опросов при монтировании компонента
     useEffect(() => {
         setIsLoading(true);
-        fetch('http://localhost:5000/api/surveys', {
+        fetch(`${process.env.REACT_APP_API_URL}/surveys`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -25,20 +24,18 @@ const SurveyList = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setSurveys(data); // Установка загруженных данных в состояние
-                setIsLoading(false); // Сброс состояния загрузки
+                setSurveys(data);
+                setIsLoading(false);
             })
             .catch((error) => {
                 console.error('Ошибка загрузки опросов:', error);
-                setIsLoading(false); // Сброс состояния загрузки при ошибке
+                setIsLoading(false);
             });
     }, []);
 
-    // Обрабатывает окончание перетаскивания опроса
     const onDragEnd = (result) => {
         const { source, destination } = result;
 
-        // Проверяем наличие места назначения
         if (!destination) return;
 
         const reorderedSurveys = Array.from(surveys); // Копия массива опросов
@@ -48,7 +45,6 @@ const SurveyList = () => {
         setSurveys(reorderedSurveys); // Обновление состояния с новым порядком опросов
     };
 
-    // Отображение индикатора загрузки во время загрузки данных
     if (isLoading) {
         return <LoadingIndicator text="Загрузка опросов..." />;
     }
@@ -62,10 +58,17 @@ const SurveyList = () => {
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="survey-list">
                     {(provided) => (
-                        <Box {...provided.droppableProps} ref={provided.innerRef}>
+                        <Box
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                        >
                             {surveys.length > 0 ? (
                                 surveys.map((survey, index) => (
-                                    <Draggable key={survey.id} draggableId={`survey-${survey.id}`} index={index}>
+                                    <Draggable
+                                        key={survey.id}
+                                        draggableId={`survey-${survey.id}`}
+                                        index={index}
+                                    >
                                         {(provided) => (
                                             <Paper
                                                 ref={provided.innerRef}
@@ -79,12 +82,16 @@ const SurveyList = () => {
                                                 }}
                                             >
                                                 <Box sx={{ flexGrow: 1 }}>
-                                                    <Typography variant="h6">{survey.name}</Typography>
-                                                    <Typography variant="body1">{survey.description}</Typography>
+                                                    <Typography variant="h6">
+                                                        {survey.name}
+                                                    </Typography>
+                                                    <Typography variant="body1">
+                                                        {survey.description}
+                                                    </Typography>
                                                 </Box>
                                                 <IconButton
                                                     component={Link}
-                                                    to={`/edit/${survey.id}`}
+                                                    to={`/survey/edit/${survey.id}`}
                                                     size="medium"
                                                     sx={{ ml: 2 }}
                                                 >
@@ -98,6 +105,17 @@ const SurveyList = () => {
                                 <Typography>Опросов не найдено</Typography>
                             )}
                             {provided.placeholder}
+                            <Button
+                                component={Link}
+                                to="/survey/create"
+                                variant="outlined"
+                                color="primary"
+                                startIcon={<Add />}
+                                fullWidth
+                                sx={{ mt: 2, p: 2 }}
+                            >
+                                Создать опрос
+                            </Button>
                         </Box>
                     )}
                 </Droppable>
